@@ -4,105 +4,35 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const customerSchema = mongoose.Schema(
   {
 
-    fullName: {
-      type: String,
-      trim:true
+    customer: {
+         type: mongoose.Schema.Types.ObjectId,
+         ref:"projects"
 
    
     },
-    region: {
+    EstbilshSatuts: {
       type: String,
-      trim:true
+    enum:["APPROVED" , "REJECTED" , "NEUTRAL" , "NO_RESPONSE"]
 
     },
-    phoneNumber: {
-      type: String,
-      trim:true,
-      unique: true,
+    contactDate: {
+      type: Date,
+    
 
     },
-    secondaryPhoneNumber: {
-      type: String,
-      trim:true
-
+    contactStauts:{
+type:String,
+enum:["inprosess" , "contacted" , "nocontact"] ,
+default:"nocontact"
     },
-    currency: {
-      type: String,
    
-    },
-    firstPayment: {
-      type: String,
-      trim:true
-
-    },
-    clientStatus: {
-      type: String,
-      trim:true,
-  
-    },
-    project: {
-      type:String,
-      trim:true
-    },
     notes: {
       type: String,
       trim:true
 
     },
-    clientRequire: {
-      type: String,
-      trim:true
-
-    },
-    clientendRequr: {
-      type: String,
-      trim:true
-
-    },
-    addBy: {
-      type:String,
-      trim:true
-    },
-    cashOption:{
-      type:String,
-      trim:true
-
-    },
-    installmentsPyYear:{
-      type:String,
-      trim:true
-
-    },
-    endContactDate:{
-      type:Date
-    }
-    ,
-    customerDate :{
-      type:Date
-    },
-    isViwed:{
-      type:String,
-      trim:true
-    },
-    SectionFollow: [{
-      details: {
-        type: String
-      },
-      detailsDate: {
-        type: Date,
-      },
-      user: {
-        type: Number,
-        ref: "users",
-      },
-      CustomerDealsatuts:{
-        type:String
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now // Automatically sets the creation date
-      }
-    }]
+   
+    addedBy: { type: Number, ref: "users" },
   },
   {
     timestamps: true,

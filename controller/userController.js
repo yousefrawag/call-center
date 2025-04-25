@@ -15,7 +15,7 @@ exports.getUsers = (req, res, next) => {
   }
   userSchema
     .find(fillter)
-    .populate("role")
+   
     .sort({ createdAt: -1 })
     .select("-password")
     .then((data) => {
@@ -73,8 +73,8 @@ exports.addUser = async (req, res, next) => {
           <!-- شعار الشركة -->
        
 
-          <h2 style="color: #218bc7;">🎉 مرحبًا ${user.name}!</h2>
-          <p>تم إنشاء حسابك بنجاح على منصتنا  ألوان المسافر. يمكنك الآن تسجيل الدخول باستخدام التفاصيل التالية:</p>
+          <h2 style="color: #218bc7;">🎉 مرحبًا ${user.fullName}!</h2>
+          <p>تم إنشاء حسابك بنجاح على منصتنا   . يمكنك الآن تسجيل الدخول باستخدام التفاصيل التالية:</p>
 
           <p><strong>✉️ البريد الإلكتروني:</strong> ${user.email}</p>
           <p><strong>🔑 كلمة المرور:</strong> ${req.body.password}</p>
@@ -102,6 +102,7 @@ exports.addUser = async (req, res, next) => {
     res.status(200).json({ action: "تم إنشاء الحساب وإرسال البريد الإلكتروني بنجاح" });
 
   } catch (error) {
+    console.error("فشل إرسال الإيميل:", error);
     next(error);
   }
 };
@@ -157,7 +158,7 @@ exports.updateUserOwnInfo = async (req, res, next) => {
       .findByIdAndUpdate(id, updateData, {
         new: true,
       })
-      .populate("role");
+    
     res.status(200).json({ message: "User updated successfully", updatedUesr });
   } catch (error) {
     next(error);
@@ -184,7 +185,6 @@ exports.getUserById = (req, res, next) => {
 
   userSchema
     .findById(id)
-    .populate("role")
     .select("-password")
     .then((data) => {
       if (!data) {

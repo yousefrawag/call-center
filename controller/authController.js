@@ -6,7 +6,9 @@ const addNewdeaily = require("../controller/DeailyReport/AddNewdeaily")
 exports.login = async (req, res, next) => {
   try {
     // Find user by email
-    const user = await userSchema.findOne({ email: req.body.email }).populate("role");
+  console.log(req.body);
+  
+    const user = await userSchema.findOne({ email: req.body.email });
     if (!user) {
       throw new Error("User doesn't exist");
     }

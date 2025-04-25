@@ -19,17 +19,17 @@ const projectsAddedToday = require("../controller/projectController/projectsAdde
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
 
 const router = express.Router();
-router.use(protected)
+// router.use(protected)
 router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
 router
   .route("/")
   .get(
-    authorizationMW("canViewProjects") ,
+ 
     
     getProjects)
   .post(
-    authorizationMW("canAddProjects"),
+  
     multerUpload.array("files"),
     addProject
   );
@@ -38,14 +38,14 @@ router.get("/uinqData" , UinqDataProject)
 router
   .route("/:id")
   .put(
-    authorizationMW("canEditProjects"),
+  
     multerUpload.array("files"),
     updateProject
   )
   .get(
-    authuserViewhasMission("canViewProjects"), 
+   
     getProjectByID)
   .delete(
-    authorizationMW("canDeleteProjects"),
+ 
    deleteProject);
 module.exports = router;

@@ -10,66 +10,20 @@ const file = mongoose.Schema(
 );
 const projectSchema = mongoose.Schema(
   {
-    projectOwner:String,
-    projectOwnerPhone:String,
-    projectName: String,
-    estateType: { type: String },
-    governorate: { type: String },
-    detailedAddress: { type: String },
-    clientType: { type: String },
-    // locations:{
-    //   type:Number,
-    //   ref:"country"
-    // },
-    governoate:{
-      type:String,
-
-    },
-    pymentType: { type: String },
-    estatePrice: { type: String },
-    projectDetails:{type:String},
-    projectNotes:{type:String},
-    operationType: { type: String },
-    installments: { type: String },
-    installmentsPerYear: { type: String },
-    installmentsFirstPyment: { type: String },
-    installmentsFirstPermonth: { type: String },
-    InstallmentPeriod:{type:String},
-    areaMatter: { type: String },
+    name:String,
+    phone:String,
+    scoundphone: String,
+    stauts: { type: String },
+    idNumber:String ,
+    SiginNumber:String ,
+    ExpiryDate:Date,
+    ReleaseDate:Date,
     imagesURLs: [file],
     videosURLs: [file],
     docsURLs: [file],
-    projectads:{
-      type:String
-    },
-    RefereeStatus:{
-      type:String
-    } ,
+
     addedBy: { type: Number, ref: "users" },
-  
-    projectSatatus :{
-      type:String,
-     
-   
-    }  ,
-    spaceOuteside :{
-      type:String
-    },
-    typeOfSpaceoutside :{
-      type:String,
-    },
-    imageLink :{
-      type:String,
-    },
-    videoLink:{
-      type:String,
-    },
-    cashPries:{
-      type:String
-    },
-    materPriec:{
-      type:String
-    }
+ 
   },
 
   {

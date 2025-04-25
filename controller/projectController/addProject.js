@@ -8,7 +8,7 @@ const addProject = async (req, res, next) => {
   try {
     let project = new projectSchema(req.body);
     
-    project.addedBy = req.token.id;
+    // project.addedBy = req.token.id;
     const imagesURLs = [];
     const videosURLs = [];
     const docsURLs = [];
@@ -63,7 +63,7 @@ const addProject = async (req, res, next) => {
     // ✅ Create notifications properly
     const notifications = admins.map((admin) => ({
       user: admin._id,  // Ensure this is a number if required
-      employee: req.token?.id,
+      // employee: req.token?.id,
       levels: "projects",
       type: "add",
       allowed:project?._id,

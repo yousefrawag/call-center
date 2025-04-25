@@ -21,10 +21,10 @@ router
 router
   .route("/")
   .get(
-    authorizationMW("canViewEmployees"),
+   
    userController.getUsers)
   .post(
-    authorizationMW("canAddEmployees"),
+
     multerUpload.single("image"),
     // insert,
     // validationResult,
@@ -35,7 +35,7 @@ router.get("/admins" , userController.getusersAdmin)
 router
   .route("/:id")
   .put(
-    authorizationMW("canEditEmployees"),
+   
     multerUpload.single("image"),
     // update,
     // validationResult,
@@ -43,6 +43,6 @@ router
   )
   .get(userController.getUserById)
   .delete(
-    authorizationMW("canDeleteEmployees"), 
+  
   userController.deleteUser);
 module.exports = router;

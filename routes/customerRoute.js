@@ -22,13 +22,13 @@ router.use(protect)
 router
   .route("/")
   .get( 
-    authorizationMW("canViewClients"),
+    
     getCustomers)
   .post(
-    authorizationMW("canAddClients"),
+   
     addCustomer
   )
-  router.post("/many" , authorizationMW("canAddClients"), insertMany);
+  router.post("/many" , insertMany);
   // where any can select customers
 router.get("/selectCustomer" ,SelectCustomer )
 router.get("/uinqData"  , uinqCoustomerData)
@@ -36,15 +36,15 @@ router.get("/userCustomer" ,  getUserCustomer)
 router
   .route("/:id")
   .put(
-    authorizationMW("canEditClients"),
+
  
     updateCustomer
   )
   .get(
-    authorizationMW("canViewClients"), 
+
   getCustomerByID)
   .delete(
-    authorizationMW("canDeleteClients"), 
+ 
     deleteCustomer);
 
 module.exports = router;

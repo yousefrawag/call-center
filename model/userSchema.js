@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema(
     fullName: {
       type: String,
     },
-    job: String,
+ 
     phoneNumber: String,
     email: {
       type: String,
@@ -16,21 +16,14 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
     },
-    role: {
-      type: Number,
-      ref: "roles",
-    },
+  
     imageURL: {
       type: String,
       default:
         "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745",
     },
     imageID: String,
-    type: {
-      type: String,
-      enum: ["admin", "employee"],
-      default: "employee",
-    },
+
   },
   {
     timestamps: true,
