@@ -7,6 +7,7 @@ const addProject = async (req, res, next) => {
   
   try {
     let project = new projectSchema(req.body);
+    console.log("project" ,project );
     
     // project.addedBy = req.token.id;
     const imagesURLs = [];

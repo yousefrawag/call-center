@@ -21,7 +21,7 @@ const projectSchema = mongoose.Schema(
     imagesURLs: [file],
     videosURLs: [file],
     docsURLs: [file],
-
+    hasBeenCalled: { type: Boolean, default: false } ,
     addedBy: { type: Number, ref: "users" },
  
   },
