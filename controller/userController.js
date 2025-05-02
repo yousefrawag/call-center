@@ -203,7 +203,7 @@ exports.logout = async (req, res, next) => {
     }).sort({ login: -1 }); // Get the latest session
 
     if (!findDeailyUser) {
-      return res.status(400).json({ msg: "No active session found for logout" });
+      return res.status(200).json({ msg: "No active session found for logout" });
     }
 
     // Set logout time and calculate total hours

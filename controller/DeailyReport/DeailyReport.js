@@ -12,9 +12,7 @@ const getDeailyreport= async (req, res, next) => {
         const records = await DeailyReportsmodule.find()
           .populate({
             path: "employeeID",
-            populate: {
-              path: "role", // Nested population for the `role` field
-            },
+         
           })
           .sort({ createdAt: -1 });
     

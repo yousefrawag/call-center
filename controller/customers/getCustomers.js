@@ -1,47 +1,69 @@
 const customerSchema = require("../../model/customerSchema");
-const projectschema = require("../../model/projectSchema")
-const userSchema = require("../../model/userSchema")
 const GetallCustomer = async (req, res, next) => {
   try {
-    const { field, searTerm , startDate , endDate } = req.query;
-    // const id = req.token.id
-    // const user = await userSchema.findById(id)
-    // let filters 
-    // if(user.type === "admin") {
-    //    filters = {};
-    // }else{
-    //   filters = {
-    //     addBy: {
-    //       $regex: new RegExp(`(^|\\s|\\/)+${user?.fullName.trim()}($|\\s|\\/)`, 'i') // Match name as part of a shared or individual value
-    //     }
-    //   };     
-    // }
-   
-   
-      // if (
-      //   ["fullName" , "region" , "currency" , 
-      //     "firstPayment" , "clientStatus" , 
-      //     "cashOption" , "installmentsPyYear" , 
-      //     "isViwed" ,"notes","phoneNumber",
-      //     "project", "addBy",
-      //      "clientendRequr" , "clientRequire"].includes(field) && searTerm
-      
-      // ) {
-      //   filters[field] = { $regex: new RegExp(searTerm, 'i') };
-      // } 
+    const { field, searchTerm } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
- 
-      // if(["createdAt" , "endContactDate" , "customerDate"].includes(field) && endDate){
-      //   filters[field] = {
-      //     $gte: new Date(startDate),  // greater than or equal to fromDate
-      //     $lte: new Date(endDate) 
-      //   }
-      // }
-    
+    const matchStage = {};
 
-    const data = await customerSchema.find({}).sort({ createdAt: -1 }).populate("customer").populate("addedBy");
+    // 🔍 دعم البحث داخل الحقول النستد مثل addedBy.fullName
+    if (field && searchTerm) {
+      if (field === "addedBy.fullName") {
+        matchStage["addedBy.fullName"] = { $regex: searchTerm, $options: "i" };
+      } else if (field === "customer.name") {
+        matchStage["customer.name"] = { $regex: searchTerm, $options: "i" };
+      } else {
+        matchStage[field] = { $regex: searchTerm, $options: "i" };
+      }
+    }
 
-    res.status(200).json({ data });
+    const pipeline = [
+      {
+        $lookup: {
+          from: "users",
+          localField: "addedBy",
+          foreignField: "_id",
+          as: "addedBy",
+        },
+      },
+      { $unwind: { path: "$addedBy", preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: "projects",
+          localField: "customer",
+          foreignField: "_id",
+          as: "customer",
+        },
+      },
+      { $unwind: { path: "$customer", preserveNullAndEmptyArrays: true } },
+      {
+        $match: matchStage,
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: "total" }],
+          data: [{ $skip: skip }, { $limit: limit }],
+        },
+      },
+    ];
+
+    const results = await customerSchema.aggregate(pipeline);
+
+    const data = results[0]?.data || [];
+    const totalCount = results[0]?.metadata[0]?.total || 0;
+
+    res.status(200).json({
+      data,
+      page,
+      limit,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+    });
   } catch (error) {
     next(error);
   }

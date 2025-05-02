@@ -1,33 +1,38 @@
 const projectSchema = require("../../model/projectSchema");
 
 const getallProjects = async (req, res, next) => {
-
-  
   try {
+    const {field, searchTerm} = req.query
+    console.log("page" ,req.query.page);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+const filter = {
 
+}
+if (field && searchTerm) {
 
-  
-    
-    const data = await projectSchema.find({}).populate("addedBy").sort({ createdAt: -1 });
-    const projectStatusCount = data.reduce((acc, item) => {
-      const status = item.projectStatus; // Extract project status
-    
-      if (!acc[status]) {
-        acc[status] = { status: status, count: 0 }; // Initialize if not exists
-      }
-    
-      acc[status].count += 1; // Increment count
-    
-      return acc;
-    }, {});
+  filter[field] = { $regex: searchTerm, $options: "i" };
 
-    console.log(projectStatusCount);
-    
-      res.status(200).json({ data });
- 
-  
+}
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      projectSchema
+        .find(filter)
+       
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      projectSchema.countDocuments()
+    ]);
+
+    res.status(200).json({
+      data,
+      total,
+      page,
+      pages: Math.ceil(total / limit)
+    });
   } catch (error) {
-    
     next(error);
   }
 };

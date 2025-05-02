@@ -5,12 +5,13 @@ const { insert, update } = require("../middleware/validations/userValidator");
 const authorizationMW = require("../middleware/authorizationMW");
 const multerUpload = require("../middleware/multer");
 const protect = require("../middleware/authenticationMW")
-
+const getDeailyreport  = require("../controller/DeailyReport/DeailyReport")
 const router = express.Router();
 router.use(protect)
 router.route("/getCurrentLoggedUser").get(userController.getCurrentLoggedUser);
 router.route("/changePassword").post(userController.changePassword);
 router.route("/logout").post(userController.logout);
+router.route("/DeailyRoutes").get(getDeailyreport)
 router
   .route("/update")
   .put(

@@ -41,26 +41,20 @@ server.use(cookieParser());
 server.use("/api", require("./routes/authRoute"));
 
 
-server.use("/api/chats", require("./routes/chatRoute"));
+
 server.use("/api/notifications", require("./routes/notificationRoute"));
-server.use("/api/messages", require("./routes/messageRoute"));
+
 server.use("/api/customers", require("./routes/customerRoute"));
-server.use("/api/currency", require("./routes/currencyRoute"));
+
 server.use("/api/users", require("./routes/userRoute"));
 server.use("/api/roles", require("./routes/roleRoute"));
 
 server.use("/api/projects", require("./routes/ProjectRoute"));
-server.use("/api/Privetprojects", require("./routes/privetProjectRoute"));
-server.use("/api/missions", require("./routes/missionRoutes"));
+
 
 server.use("/api/DeailyRoutes", require("./routes/DeailyRoutes"));
-server.use("/api/Services", require("./routes/ServicesRoutes"));
-server.use("/api/visav", require("./routes/VisaRoutes"));
-server.use("/api/prvicy", require("./routes/prvcyRoute"));
-server.use('/api/cutomerRequest' , require("./routes/CustomerMessages"))
-server.use('/api/Section' , require("./routes/SectionsRoutes"))
-server.use("/api/region", require("./routes/regionRoute"));
-server.use("/api/projectStatuts", require("./routes/projectStatutsRoute"));
+
+
 // Not Found MiddleWare
 
 server.use((req, res, next) => {

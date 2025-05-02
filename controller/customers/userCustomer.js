@@ -4,22 +4,19 @@ const getUserCustomer = async (req, res, next) => {
   try {
     console.log("Token ID:", req.token.id);
     
-    const founduser = await userSchema.findById(req.token.id).lean();
-    if (!founduser) {
-      console.log("User not found!");
-      return res.status(404).json({ message: "User not found" });
-    }
 
-    console.log("User Info:", founduser);
-
-    let filters = { addBy: founduser.fullName.trim() };
-    const data = await customerSchema.find(filters);
+    const data = await customerSchema.find({addedBy:req.token.id}).populate("customer")
+    .populate("addedBy");;
+       const APPROVEDContact = await customerSchema.countDocuments({addedBy:req.token.id ,  EstbilshSatuts: "APPROVED" });
+        const REJECTEDContact = await customerSchema.countDocuments({addedBy:req.token.id , EstbilshSatuts: "REJECTED" });
+        const NEUTRALContact = await customerSchema.countDocuments({addedBy:req.token.id , EstbilshSatuts: "NEUTRAL" });
+        const NoresponesContact = await customerSchema.countDocuments({addedBy:req.token.id , EstbilshSatuts: "NO_RESPONSE" });
 
     if (!data.length) {
       return res.status(404).json({ message: "Customer doesn't exist" });
     }
 
-    res.status(200).json({ data });
+    res.status(200).json({ data  , APPROVEDContact ,REJECTEDContact , NEUTRALContact , NoresponesContact });
   } catch (error) {
     next(error);
   }

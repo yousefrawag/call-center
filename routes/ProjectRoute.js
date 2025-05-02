@@ -17,11 +17,12 @@ const protected = require("../middleware/authenticationMW")
 const multerUpload = require("../middleware/multer");
 const projectsAddedToday = require("../controller/projectController/projectsAddedToday");
 const authuserViewhasMission = require("../middleware/authuserViewhasMission")
-
+const {getDashboardStats} = require("../controller/Systemstatistics")
 const router = express.Router();
 // router.use(protected)
 router.route("/users/:id").get(userProjects);
 router.route("/projectsToday").get(projectsAddedToday);
+router.route("/Systemstatistics").get(getDashboardStats);
 router
   .route("/")
   .get(
